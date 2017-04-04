@@ -15,33 +15,34 @@ public class Client {
         PrintWriter output;
         String response;
         boolean HearAnother = true;
-        String xmlExample = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<jokes><lead>turnip</lead><punchline>turnip the heat, I'm freezing</punchline></jokes>";
+        String xmlExample;
 
         String serverAddress = "localhost";
         int port = 9999;
 
-     /*   Socket s = new Socket(serverAddress, port);
+        Socket s = new Socket(serverAddress, port);
 
         output = new PrintWriter(s.getOutputStream(), true);
 
         input =
             new BufferedReader(new InputStreamReader(s.getInputStream()));
-*/
+
         scan = new Scanner(System.in);
 
         System.out.println("Do you want to hear a knock knock joke? y/n");
         response = scan.nextLine();
-  //      output.println(response);
-        if(response.equals("n")){
+        output.println(response);
+        if(!response.equals("y")){
             HearAnother = false;    
         }
 
         while(HearAnother){
-            if(response.equals("n")){
+            if(!response.equals("y")){
                 break;
             }
             try {
+                xmlExample = readInput(input);
+                System.out.println(xmlExample);
               String joke = generateKnockKnockJoke(xmlExample);
               System.out.println(joke);
               System.out.println("");
@@ -52,7 +53,7 @@ public class Client {
             }
 
             response = scan.nextLine();
-   //         output.println(response);
+            output.println(response);
         }
         System.exit(0);
     }
@@ -77,5 +78,11 @@ public class Client {
         Document doc = saxBuilder.build(new StringReader(xmlDoc));
         String punchline = doc.getRootElement().getChildText("punchline");
         return punchline;
+    }
+    private static String readInput(BufferedReader input)throws IOException{
+        String xmlExample = input.readLine();
+        xmlExample = xmlExample + input.readLine();
+        xmlExample = xmlExample + input.readLine();
+        return xmlExample;
     }
 }
